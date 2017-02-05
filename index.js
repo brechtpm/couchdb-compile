@@ -103,7 +103,7 @@ function compileDirectory (dir, options, callback) {
 
       var relpath = filename.substr(dir.length).replace(/^\//, '')
       var parts = relpath.split('/')
-      var isAttachment = parts[0] === '_attachments'
+      var isAttachment = options.webapp ? parts[0] !== '_ddoc' : parts[0] === '_attachments'
       var readOpts = {
         encoding: isAttachment ? null : 'utf8'
       }
@@ -113,7 +113,7 @@ function compileDirectory (dir, options, callback) {
           return done(err)
         }
 
-        if (parts[0] === '_attachments') {
+        if (isAttachment) {
           parts.shift()
           var name = parts.join('/')
           var contentType = mime.lookup(filename)
@@ -145,7 +145,11 @@ function compileDirectory (dir, options, callback) {
               err = e
             }
           } else {
-            part[key] = data.toString().trim()
+            try {
+              part[key] = data.toString().trim()
+            } catch (e) {
+              console.log(filename)
+            }
           }
         }
 

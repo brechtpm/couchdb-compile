@@ -4,7 +4,7 @@ var stringify = require('json-stable-stringify')
 var compile = require('./')
 
 var options = minimist(process.argv.slice(2), {
-  boolean: ['index']
+  boolean: ['index', 'webapp']
 })
 
 options.multipart = false
